@@ -13,6 +13,7 @@ public class Assignment {
     private Date assignmentDate;
     private Date deadlineDate;
 
+    @ManyToMany
     private List<Tag> tags;
 
     @ManyToOne
