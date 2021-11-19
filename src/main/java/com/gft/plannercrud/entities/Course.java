@@ -12,6 +12,9 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Código da disciplina não pode ser vazio!")
+    private String code;
+
     @NotEmpty(message = "Nome da disciplina não pode ser vazio!")
     private String name;
 
@@ -29,5 +32,13 @@ public class Course {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
