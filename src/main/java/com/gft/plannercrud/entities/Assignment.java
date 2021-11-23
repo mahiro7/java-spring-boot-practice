@@ -1,6 +1,9 @@
 package com.gft.plannercrud.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
@@ -10,11 +13,16 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Descrição não pode estar em branco!")
+    private String name;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date assignmentDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deadlineDate;
 
-    @ManyToMany
-    private List<Tag> tags;
+    @ManyToOne
+    private Tag tag;
 
     @ManyToOne
     private Course course;
@@ -43,12 +51,12 @@ public class Assignment {
         this.deadlineDate = deadlineDate;
     }
 
-    public List<Tag> getTags() {
-        return tags;
+    public Tag getTag() {
+        return tag;
     }
 
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
+    public void setTag(Tag tag) {
+        this.tag = tag;
     }
 
     public Course getCourse() {
@@ -57,5 +65,13 @@ public class Assignment {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

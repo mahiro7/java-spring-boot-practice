@@ -1,10 +1,9 @@
 package com.gft.plannercrud.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
+import org.hibernate.annotations.Columns;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Course {
@@ -12,10 +11,11 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Código da disciplina não pode ser vazio!")
+    @NotBlank(message = "Código da disciplina não pode estar em branco!")
+    @Column(unique = true)
     private String code;
 
-    @NotEmpty(message = "Nome da disciplina não pode ser vazio!")
+    @NotBlank(message = "Nome da disciplina não pode estar em branco!")
     private String name;
 
     public Long getId() {
