@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}"
+>
+<title>Tarefa - Formulário</title>
+
+<div layout:fragment="content">
+    <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+    <div class="alert alert-primary" th:if="${message != null}" th:text="${message}"></div>
+    <a href="/assignment" type="button" class="btn btn-primary mb-2">Todas tarefas</a>
+    <div class="card">
+        <div class="card-header">
+            Tarefa<span th:if="${page != null}" th:text="${page}"></span>
+        </div>
+        <div class="card-body">
+            <form method="post" th:action="@{/assignment/new}" th:object="${assignment}">
+                <input type="hidden" th:field="*{id}" />
+                <div class="form-group mb-3">
+                    <label class="mb-1" for="name">Descrição</label>
+                    <input class="form-control" id="name" type="text" th:field="*{name}" />
+                    <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                    <label class="mb-1 mt-2" for="course">Disciplina</label>
+                    <select th:field="*{course}" class="form-select" id="course">
+                        <option th:each="course: ${courses}" th:value="${course.id}" th:text="${course.name}"></option>
+                    </select>
+                    <label class="mb-1 mt-2" for="tag">Tag</label>
+                    <div>
+                        <select style="width:80%; display:inline-block" th:field="*{tag}" class="form-select mr-2" id="tag">
+                            <option id="tagOption" th:each="tag: ${tags}" th:value="${tag.id}" th:text="${tag.name}" th:style="'background-color:'+${tag.color}"></option>
+                        </select>
+                        <a class="btn btn-primary mb-2" href="/tag/new">Adicionar tag</a>
+                    </div>
+                    <label class="mb-1 mt-2" for="assignmentDate">Data de atribuição</label>
+                    <input class="form-control" id="assignmentDate" type="date" th:field="*{assignmentDate}" />
+                    <div class="text-danger" th:if="${#fields.hasErrors('assignmentDate')}" th:errors="*{assignmentDate}"></div>
+                    <label class="mb-1 mt-2" for="deadlineDate">Prazo de entrega</label>
+                    <input class="form-control" id="deadlineDate" type="date" th:field="*{deadlineDate}" />
+                    <div class="text-danger" th:if="${#fields.hasErrors('deadlineDate')}" th:errors="*{deadlineDate}"></div>
+                </div>
+                <button class="btn btn-primary mt-1" type="submit">
+                    <span th:if="${button != null}" th:text="${button}"></span>
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<div layout:fragment="script">
+    <script>
+        if ($('#colorValue').val()) {
+            $('#color').css('background-color', $('#colorValue').val());
+            $('#colorValue').val($('#colorValue').val());
+        } else {
+            $('#color').css('background-color', '#000000');
+            $('#colorValue').val('#000000');
+        }
+
+        $("#color").ColorPicker({
+            color: '#000000',
+            onShow: function (colpkr) {
+                $(colpkr).fadeIn(500);
+                return false;
+            },
+            onHide: function (colpkr) {
+                $(colpkr).fadeOut(500);
+                return false;
+            },
+            onChange: function (hsb, hex, rgb) {
+                $('#color').css('background-color', '#' + hex);
+                $('#colorValue').val('#' + hex);
+            }
+        });
+
+    </script>
+</div>
+
+</html>

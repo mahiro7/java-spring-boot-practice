@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Tags - Lista</title>
+</head>
+<div layout:fragment="content">
+    <div>
+        <div class="alert alert-primary" th:if="${message != null}" th:text="${message}"></div>
+        <div class="alert alert-primary" th:if="${tags.empty}">
+            <p>Nenhuma tag cadastrada!</p>
+        </div>
+        <a href="/tag/new" type="button" class="btn btn-primary mb-2">Cadastrar nova tag</a>
+        <table class="table" th:if="${!tags.empty}">
+            <thead>
+            <tr>
+                <th>Tag</th>
+                <th></th>
+                <th>Opções</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="tag: ${tags}">
+                <td>
+                    <span th:style="'display:flex;justify-content:center;align-items:center;height:38px;width:40%;border:1px solid #ccc;border-radius:5px;padding:2px;background-color:'+ ${tag.color}">
+                        <span th:style="'font-family:sans-serif;font-size:16px;;background: inherit;
+                            background-clip: text;
+                            -webkit-background-clip: text;
+                            color: transparent;
+                            filter: invert(1) grayscale(100%) contrast(300%);
+                            -webkit-filter: invert(1) grayscale(100%) contrast(300%);'" th:text="${tag.name}"></span>
+
+                    </span>
+                </td>
+                <td></td>
+                <td>
+                    <a class="btn btn-warning" th:href="@{/tag/edit(id=${tag.id})}">Editar</a>
+                    <a class="btn btn-danger" th:href="@{/tag/delete(id=${tag.id})}" onclick="return confirm('Você realmente deseja excluir esta tag?')">Excluir</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

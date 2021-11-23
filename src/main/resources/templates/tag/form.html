@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}"
+>
+<title>Tag - Formulário</title>
+
+<div layout:fragment="content">
+    <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+    <div class="alert alert-primary" th:if="${message != null}" th:text="${message}"></div>
+    <a href="/tag" type="button" class="btn btn-primary mb-2">Todas tags</a>
+    <div class="card">
+        <div class="card-header">
+            Tag<span th:if="${page != null}" th:text="${page}"></span>
+        </div>
+        <div class="card-body">
+            <form method="post" th:action="@{/tag/new}" th:object="${tag}">
+                <input type="hidden" th:field="*{id}" />
+                <div class="form-group mb-3">
+                    <label class="mb-1" for="name">Descrição</label>
+                    <input class="form-control" id="name" type="text" th:field="*{name}" />
+                    <div class="text-danger" th:if="${codeError != null}" th:text="${codeError}"></div>
+                    <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                    <label class="mb-1 mt-2" for="color">Cor</label>
+                    <input class="form-control" id="color" th:field="*{color}" value="" type="button" style="height:25px;width:100px;border:3px solid #c0c0c0;padding:2px"></input>
+                    <input type="hidden" id="colorValue" th:field="*{color}" />
+                    <div class="text-danger" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></div>
+                </div>
+                <button class="btn btn-primary mt-1" type="submit">
+                    <span th:if="${button != null}" th:text="${button}"></span>
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<div layout:fragment="script">
+    <script>
+if ($('#colorValue').val()) {
+    $('#color').css('background-color', $('#colorValue').val());
+    $('#colorValue').val($('#colorValue').val());
+} else {
+    $('#color').css('background-color', '#000000');
+    $('#colorValue').val('#000000');
+}
+
+$("#color").ColorPicker({
+    color: '#000000',
+    onShow: function (colpkr) {
+        $(colpkr).fadeIn(500);
+        return false;
+    },
+    onHide: function (colpkr) {
+        $(colpkr).fadeOut(500);
+        return false;
+    },
+    onChange: function (hsb, hex, rgb) {
+        $('#color').css('background-color', '#' + hex);
+        $('#colorValue').val('#' + hex);
+    }
+});
+
+    </script>
+</div>
+
+</html>

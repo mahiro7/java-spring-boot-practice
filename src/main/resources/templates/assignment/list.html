@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Tarefas - Lista</title>
+</head>
+<div layout:fragment="content">
+    <div>
+        <div class="alert alert-primary" th:if="${message != null}" th:text="${message}"></div>
+        <div class="alert alert-primary" th:if="${assignments.empty}">
+            <p>Nenhuma tarefa cadastrada!</p>
+        </div>
+        <a href="/assignment/new" type="button" class="btn btn-primary mb-2">Cadastrar nova tarefa</a>
+        <table class="table" th:if="${!assignments.empty}">
+            <thead>
+            <tr>
+                <th>Tarefa</th>
+                <th>Tag</th>
+                <th>Disciplina</th>
+                <th>Atribuição</th>
+                <th>Entrega</th>
+                <th>Opções</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="assignment: ${assignments}">
+                <td><span th:text="${assignment.name}"></span></td>
+                <td>
+                    <span th:style="'display:flex;justify-content:center;align-items:center;height:28px;width:100%;border:1px solid #ccc;border-radius:5px;padding:2px;background-color:'+ ${assignment.tag.color}" th:if="${assignment.tag != null}">
+                        <a th:style="'font-family:sans-serif;font-size:14px;background: inherit;
+                                background-clip: text;
+                                -webkit-background-clip: text;
+                                color: transparent;
+                                filter: invert(1) grayscale(100%) contrast(300%);
+                                -webkit-filter: invert(1) grayscale(100%) contrast(300%);'" th:if="${assignment.tag != null}" th:text="${assignment.tag.name}" th:href="@{/tag/edit(id=${assignment.tag.id})}">
+                        </a>
+                    </span>
+                </td>
+                <td><span th:if="${assignment.course != null}" th:text="${assignment.course.name}"></span></td>
+                <td><span th:text="${#dates.format(assignment.assignmentDate, 'dd/MM/yyyy')}"></span></td>
+                <td><span th:text="${#dates.format(assignment.deadlineDate, 'dd/MM/yyyy')}"></span></td>
+                <td>
+                    <a class="btn btn-warning" th:href="@{/assignment/edit(id=${assignment.id})}">Editar</a>
+                    <a class="btn btn-danger" th:href="@{/assignment/delete(id=${assignment.id})}" onclick="return confirm('Você realmente deseja excluir esta tarefa?')">Excluir</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>
